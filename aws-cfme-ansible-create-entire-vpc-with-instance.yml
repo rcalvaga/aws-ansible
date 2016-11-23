@@ -109,4 +109,4 @@
     register: webserver1
   - name: Wait for Locust Instance to come up
     wait_for: host={{ item.public_dns_name }} port=22 delay=60 timeout=320 state=started
-    with_items: '{{locust.instances}}'
+    with_items: '{{webserver1.instances}}'

@@ -94,7 +94,7 @@
         volume_type: "{{ volume_type }}"
         volume_size: 10
         delete_on_termination: true
-      instance_initiated_shutdown_behavior: stop
+#      instance_initiated_shutdown_behavior: stop
       private_ip: 192.168.1.10
       termination_protection: no
       instance_tags:

@@ -75,7 +75,7 @@
       zone: "{{ name_zone }}"
       private_zone: true
       vpc_id: "{{ vpc_id }}"
-      record: "{{ instance_name }}"."{{ name_zone }}"
+      record: "{{ instance_name }}.{{ name_zone }}"
       type: A
       ttl: 300
       value: 192.168.1.10

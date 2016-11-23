@@ -48,7 +48,7 @@
     ec2_group:
       name: "aws-workshop-sec-group"
       region: "{{ aws_region }}"
-      description: Locust Security Group
+      description: Workshop Security Group
       vpc_id: "{{ vpc_id }}"
       rules:
         - proto: tcp
@@ -75,13 +75,13 @@
       zone: "{{ name_zone }}"
       private_zone: true
       vpc_id: "{{ vpc_id }}"
-      record: webserver1.{{ name_zone }}
+      record: {{ instance_name }}.{{ name_zone }}
       type: A
       ttl: 300
       value: 192.168.1.10
       wait: yes
 
-  - name: Creating an AWS Instance for our Webservice
+  - name: Creating an AWS Instance in our VPC 
     ec2:
       key_name: "{{ aws_keypair }}"
       group: aws-workshop-sec-group
@@ -98,15 +98,15 @@
       private_ip: 192.168.1.10
       termination_protection: no
       instance_tags:
-        Name: Webserver1
+        Name: "{{ instance_name }}"
       exact_count: 1
       count_tag:
-        Name: Webserver1
+        Name: "{{ instance_name }}"
       region: "{{ aws_region }}"
       vpc_subnet_id: "{{ subnet_id }}"
       zone: "{{ aws_zone }}"
       assign_public_ip: yes
-    register: webserver1
+    register: ec2
   - name: Wait for Locust Instance to come up
     wait_for: host={{ item.public_dns_name }} port=22 delay=60 timeout=320 state=started
-    with_items: '{{webserver1.instances}}'
+    with_items: '{{ec2.instances}}'

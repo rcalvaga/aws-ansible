@@ -65,22 +65,6 @@
           cidr_ip: 0.0.0.0/0
     register: aws_workshop_sec_group
 
-  - name: Create Route53 Workshop Private DNS Zone
-    route53_zone: zone={{ name_zone }} state=present vpc_region={{ aws_region }} vpc_id={{ vpc_id }} comment='Ansible Workshop DNS Private Zone'
-    register: rht_forum_private_zone
-
-  - name: Create Route53 DNS Record For our AWS Instance into {{name_zone}}
-    route53:
-      command: create
-      zone: "{{ name_zone }}"
-      private_zone: true
-      vpc_id: "{{ vpc_id }}"
-      record: "{{ instance_name }}.{{ name_zone }}"
-      type: A
-      ttl: 300
-      value: 192.168.1.10
-      wait: yes
-
   - name: Creating an AWS Instance in our VPC 
     ec2:
       key_name: "{{ aws_keypair }}"
@@ -95,7 +79,6 @@
         volume_size: 10
         delete_on_termination: true
 #      instance_initiated_shutdown_behavior: stop
-      private_ip: 192.168.1.10
       termination_protection: no
       instance_tags:
         Name: "{{ instance_name }}"

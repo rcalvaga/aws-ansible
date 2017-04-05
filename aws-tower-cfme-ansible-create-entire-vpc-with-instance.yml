@@ -23,8 +23,6 @@
   tasks:
   - name: Create the VPC in AWS {{ aws_region }}
     ec2_vpc:
-        aws_access_key: "{{ AWS_ACCESS_KEY }}"
-        aws_secret_key: "{{ AWS_SECRET_KEY }}"
         state: present
         cidr_block: 192.168.0.0/16
         resource_tags: { "Name":"Workshop VPC {{ attendee }}" }
@@ -48,8 +46,6 @@
 
   - name: Create an AWS Security Group for our Workshop
     ec2_group:
-      aws_access_key: "{{ AWS_ACCESS_KEY }}"
-      aws_secret_key: "{{ AWS_SECRET_KEY }}"
       name: "aws-workshop-sec-group"
       region: "{{ aws_region }}"
       description: Workshop Security Group
@@ -71,8 +67,6 @@
 
   - name: Creating an AWS Instance in our VPC 
     ec2:
-      aws_access_key: "{{ AWS_ACCESS_KEY }}"
-      aws_secret_key: "{{ AWS_SECRET_KEY }}"
       key_name: "{{ aws_keypair }}"
       group: aws-workshop-sec-group
       instance_type: t2.micro

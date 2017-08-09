@@ -19,7 +19,10 @@
 # Enjoy!                                                                                       #
 ################################################################################################
 - name: Create an Entire VPC Environment in AWS
-  hosts: all
+  hosts: localhost
+  gather_facts: True
+  connection: local
+  
   tasks:
   - name: Create the VPC in AWS {{ aws_region }}
     ec2_vpc:

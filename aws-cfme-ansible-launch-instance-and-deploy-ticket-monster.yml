@@ -45,6 +45,7 @@
   hosts: linux_launched
   gather_facts: True
   connection: local
+  become: yes
   
   roles:
      - common

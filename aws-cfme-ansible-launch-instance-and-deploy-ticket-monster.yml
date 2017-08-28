@@ -6,7 +6,7 @@
   vars:
     keypair: id_rsa_os1_rcalvaga
     instance_type: t2.micro
-    security_group: ssh-sec-group
+    security_group: http-ssh-sec-group
     image: ami-ae7bfdb8
     region: us-east-1
     vpc_subnet_id: subnet-0264793e

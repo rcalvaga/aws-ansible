@@ -1,4 +1,10 @@
 ---
+- name: Install Firewalld
+  yum: name=firewalld state=present
+  
+- name: Enable and start the Firewald service
+  systemctl: state=started name=firewalld enabled=yes
+  
 - name: Install the cockpit and cockpit-dashboard packages
   yum: name={{ item }} state=present
   with_items:

@@ -44,6 +44,8 @@
 - name: Installing and Configuring Ticket Monster Java App
   hosts: linux_launched
   gather_facts: True
+  become: yes
+  become_method: sudo
   
   roles:
      - common

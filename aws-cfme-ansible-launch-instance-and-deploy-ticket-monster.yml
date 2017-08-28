@@ -1,0 +1,52 @@
+- name: Deploying Ticket Monster App on JBoss
+  hosts: localhost
+  gather_facts: True
+  connection: local
+
+  vars:
+    keypair: id_rsa_os1_rcalvaga
+    instance_type: t2.micro
+    security_group: ssh-sec-group
+    image: ami-ae7bfdb8
+    region: us-east-1
+    vpc_subnet_id: subnet-0264793e
+    instance_name: ticketmonster-instance
+
+  tasks:
+    - name: Launching Linux instance
+      ec2:
+         assign_public_ip: yes
+         key_name: "{{ keypair }}"
+         group: "{{ security_group }}"
+         instance_type: "{{ instance_type }}"
+         image: "{{ image }}"
+         wait: true
+         region: "{{ region }}"
+         instance_tags:
+             Name: "{{ instance_name }}"
+         exact_count: 1
+         count_tag:
+             Name: "{{ instance_name }}"
+         vpc_subnet_id: "{{ vpc_subnet_id }}"
+         private_ip: "{{ private_ip1 }}" 
+      register: ec2
+    
+#    - debug: var=ec2
+    - set_fact: ec2_id={{ ec2.instance_ids[0] }}
+
+
+    - name: Add new instance to host group
+      add_host: hostname={{ ec2.instances[0].public_ip }} groupname=linux_launched
+
+    - name: Wait for SSH to come up
+      wait_for: host={{ ec2.instances[0].public_dns_name }} port=22 delay=60 timeout=320 state=started
+
+
+- name: Installing and Configuring Ticket Monster Java App
+  hosts: linux_launched
+  gather_facts: True
+  connection: local
+  
+  roles:
+     - jboss-standalone
+     - java-app

@@ -46,6 +46,7 @@
   gather_facts: True
   connection: local
   become: yes
+  become_method: sudo
   
   roles:
      - common

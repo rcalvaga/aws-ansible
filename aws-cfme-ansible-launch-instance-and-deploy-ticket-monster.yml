@@ -28,7 +28,6 @@
          count_tag:
              Name: "{{ instance_name }}"
          vpc_subnet_id: "{{ vpc_subnet_id }}"
-         private_ip: "{{ private_ip1 }}" 
       register: ec2
     
 #    - debug: var=ec2
@@ -48,5 +47,6 @@
   connection: local
   
   roles:
+     - common
      - jboss-standalone
      - java-app

@@ -11,7 +11,7 @@
     - cockpit
     - cockpit-dashboard
    
-- name: Allow external connections to port 9090 through the firewall:
+- name: Allow external connections to port 9090 through the firewall
   firewalld: immediate=yes port={{ cockpit_port }} state=enabled permanent=yes
   when: ansible_distribution_major_version == "7"
   

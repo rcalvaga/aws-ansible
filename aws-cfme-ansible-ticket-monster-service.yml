@@ -7,7 +7,7 @@
   vars:
     region:   us-east-1
     ami:      ami-81cf0c97 
-    keypair:  "{{ ec2_keypair_name | default('aws-jmarc') }}"
+    keypair:  "{{ ec2_keypair_name | default('id_rsa_os1_rcalvaga') }}"
     set_dns:  False
     count:    2
     tags_db:
@@ -29,7 +29,7 @@
         module: ec2
         keypair: "{{ keypair }}"
         instance_type: "{{ type | default('t2.micro') }}"
-        vpc_subnet_id: "subnet-{{ vpc_subnet | default('d931e1e5') }}"
+        vpc_subnet_id: "subnet-{{ vpc_subnet | default('6a708523') }}"
         image: "{{ ami }}"
         region: "{{ region }}"
         count: 1
@@ -43,7 +43,7 @@
         module: ec2
         keypair: "{{ keypair }}"
         instance_type: "{{ type | default('t2.micro') }}"
-        vpc_subnet_id: "subnet-{{ vpc_subnet | default('d931e1e5') }}"
+        vpc_subnet_id: "subnet-{{ vpc_subnet | default('6a708523') }}"
         image: "{{ ami }}"
         region: "{{ region }}"
         count: "{{ count }}"

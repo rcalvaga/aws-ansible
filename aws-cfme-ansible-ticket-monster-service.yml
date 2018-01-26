@@ -6,7 +6,7 @@
 
   vars:
     region:   us-east-1
-    ami:      ami-81cf0c97 
+    ami:      ami-ae7bfdb8 
     keypair:  "{{ ec2_keypair_name | default('id_rsa_os1_rcalvaga') }}"
     set_dns:  False
     count:    2
@@ -17,11 +17,9 @@
       env:  "{{ tags_env  | default('prod') }}"
       type: "{{ tags_type | default('app') }}"
     wait_for_ssh: False
-    provider_id: "{{ provider_id }}"
+    provider_id: 2
     max_retries: 9 
     retry_interval: 20
-    miq_username: "{{ miq_username }}"
-    miq_password: "{{ miq_password }}"
 
   tasks:
     - name: Launch DB instance
@@ -75,13 +73,13 @@
         name: "{{ item.public_ip }}"
         groups: db_provisioned
       with_items: "{{ ec2_db.instances }}"
-    
+
     - name: Add App instances to a group
       add_host:
         name: "{{ item.public_ip }}"
         groups: app_provisioned
       with_items: "{{ ec2_app.instances }}"
-   
+
     - name: Set the Provider URL
       set_fact:
         provider_url: "{{ manageiq.api_url }}/api/providers/{{ provider_id }}"
@@ -90,14 +88,12 @@
       uri:
         url: "{{ provider_url }}"
         method: POST
-        user: "{{ miq_username }}"
-        password: "{{ miq_password }}"
         body:
           action: refresh
         body_format: json
         validate_certs: False
         headers:
-          #X-Auth-Token: "{{ manageiq.api_token }}"
+          X-Auth-Token: "{{ manageiq.api_token }}"
           Content-Type: "application/json" 
         status_code: 200
       register: output
@@ -110,11 +106,9 @@
       uri:
         url: "{{ task_url }}"
         method: GET
-        user: "{{ miq_username }}"
-        password: "{{ miq_password }}"
         validate_certs: False
         headers:
-          #X-Auth-Token: "{{ manageiq.api_token }}"
+          X-Auth-Token: "{{ manageiq.api_token }}"
           Content-Type: "application/json" 
         status_code: 200
       register: task_result
@@ -127,14 +121,12 @@
       uri:
         url: "{{ manageiq.api_url }}/api/vms?filter[]=name={{ item.id }}&expand=resources"
         method: GET
-        user: "{{ miq_username }}"
-        password: "{{ miq_password }}"
         body:
           action: refresh
         body_format: json
         validate_certs: False
         headers:
-          #X-Auth-Token: "{{ manageiq.api_token }}"
+          X-Auth-Token: "{{ manageiq.api_token }}"
           Content-Type: "application/json"
         status_code: 200
       register: output
@@ -161,15 +153,13 @@
       uri:
         url: "{{ manageiq.api_url }}/api/services"
         method: POST
-        user: "{{ miq_username }}"
-        password: "{{ miq_password }}"
         body_format: json
         body:
           action: add_resource
           resources: "{{ vms }}"
         validate_certs: False
         headers:
-          #X-Auth-Token: "{{ manageiq.api_token }}"
+          X-Auth-Token: "{{ manageiq.api_token }}"
           Content-Type: "application/json"
         status_code: 200
       register: output
@@ -228,7 +218,7 @@
 
   roles:
     - jboss
-    
+
   tasks:
     - ec2_facts:
     - local_action:

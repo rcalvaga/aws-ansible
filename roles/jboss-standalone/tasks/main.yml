@@ -9,7 +9,7 @@
 
 - name: Download JBoss from jboss.org
   get_url: url=http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip dest=/opt/jboss-as-7.1.1.Final.zip
-  until: result|succeeded
+  until: result.failed is not defined or not result.failed
   retries: 5
   delay: 10
   

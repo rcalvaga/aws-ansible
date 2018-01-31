@@ -73,7 +73,8 @@
       key_name: "{{ aws_keypair }}"
       group: aws-workshop-sec-group
       instance_type: t2.micro
-      image: ami-b63769a1
+      #image: ami-b63769a1
+      image: ami-eea2ab95
       wait: yes
       wait_timeout: 500
       volumes:

@@ -51,5 +51,5 @@
   - set_stats:
       data:
         vpc_id: "{{ vpc_id }}"
-        sec_group: "{{ sec_group }}"
+        subnet_id: "{{ subnet_id }}"
       per_host: no

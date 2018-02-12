@@ -46,4 +46,10 @@
           from_port: 443
           to_port: 443
           cidr_ip: 0.0.0.0/0
-    register: aws_workshop_sec_group
+    register: sec_group
+    
+  - set_stats:
+      data:
+        vpc_id: "{{ vpc_id }}"
+        sec_group: "{{ sec_group }}"
+      per_host: no

@@ -1,3 +1,4 @@
+  ---
   - name: Creating an AWS Instance in our VPC 
     ec2:
       key_name: "{{ aws_keypair }}"

@@ -1,4 +1,10 @@
-  ---
+---
+- name: Create an Instance in AWS
+  hosts: localhost
+  gather_facts: True
+  connection: local
+  
+  tasks:
   - name: Creating an AWS Instance in our VPC 
     ec2:
       key_name: "{{ aws_keypair }}"

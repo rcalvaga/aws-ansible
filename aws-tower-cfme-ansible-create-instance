@@ -1,0 +1,24 @@
+  - name: Creating an AWS Instance in our VPC 
+    ec2:
+      key_name: "{{ aws_keypair }}"
+      group: aws-workshop-sec-group
+      instance_type: t2.micro
+      image: ami-ae7bfdb8
+      wait: yes
+      wait_timeout: 500
+      volumes:
+      - device_name: /dev/sda1
+        volume_type: "{{ volume_type }}"
+        volume_size: 10
+        delete_on_termination: true
+      termination_protection: no
+      instance_tags:
+        Name: "{{ instance_name }}"
+      exact_count: 1
+      count_tag:
+        Name: "{{ instance_name }}"
+      region: "{{ aws_region }}"
+      vpc_subnet_id: "{{ subnet_id }}"
+      zone: "{{ aws_zone }}"
+      assign_public_ip: yes
+    register: ec2

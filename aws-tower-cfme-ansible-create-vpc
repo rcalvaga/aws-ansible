@@ -1,3 +1,4 @@
+---
 - name: Create an Entire VPC Environment in AWS
   hosts: localhost
   gather_facts: True

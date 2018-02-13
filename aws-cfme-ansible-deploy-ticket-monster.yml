@@ -1,5 +1,5 @@
 - name: Installing and Configuring Ticket Monster Java App
-  hosts: all-servers
+  hosts: linux_launched
   gather_facts: True
   become: yes
   remote_user: centos

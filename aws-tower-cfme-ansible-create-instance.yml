@@ -29,3 +29,6 @@
       zone: "{{ aws_zone }}"
       assign_public_ip: yes
     register: ec2
+    
+  - debug: var=ec2
+  - set_fact: ec2_id={{ ec2.instance_ids[0] }}

@@ -32,6 +32,12 @@
     
   #- debug: var=ec2
   
+  - name: Add new instance to host group
+    add_host: hostname={{ ec2.instances[0].public_ip }} groupname=linux_launched
+
+  - name: Wait for SSH to come up
+    wait_for: host={{ ec2.instances[0].public_dns_name }} port=22 delay=60 timeout=320 state=started
+  
   - set_stats:
       data:
         ec2_public_ip: "{{ ec2.instances[0].public_ip }}"

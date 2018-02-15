@@ -21,7 +21,7 @@
       termination_protection: no
       instance_tags:
         Name: "{{ instance_name }}"
-      count: "{{instance_count}}"
+      count: "{{ instance_count }}"
       count_tag:
         Name: "{{ instance_name }}"
       region: "{{ aws_region }}"

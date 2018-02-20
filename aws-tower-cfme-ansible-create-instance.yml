@@ -32,6 +32,18 @@
     
   #- debug: var=ec2
   
+  - ec2_facts:
+  - local_action:
+      module: ec2_elb
+      ec2_region: "{{ region }}"
+      instance_id: "{{ ansible_ec2_instance_id }}"
+      ec2_elbs: "ticketmonster"
+      state: present
+      wait: yes
+      wait_timeout: 60
+    become: false
+    ignore_errors: yes
+  
   - set_stats:
       data:
         ec2_public_ip: "{{ ec2.instances[0].public_ip }}"

@@ -45,6 +45,6 @@
   
   - set_stats:
       data:
-        ec2_public_ip: "{{ ec2.instances[0].public_ip }}"
-        ec2_dns_name: "{{ ec2.instances[0].public_dns_name }}"
+        ec2_public_ip: "{{ ec2.instances.public_ip }}"
+        ec2_dns_name: "{{ ec2.instances.public_dns_name }}"
       per_host: no

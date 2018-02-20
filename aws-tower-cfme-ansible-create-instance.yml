@@ -32,11 +32,10 @@
     
   #- debug: var=ec2
   
-  - ec2_facts:
   - local_action:
       module: ec2_elb
       ec2_region: "{{ region }}"
-      instance_id: "{{ ansible_ec2_instance_id }}"
+      instance_id: "{{ ec2.instance_ids }}"
       ec2_elbs: "ticketmonster"
       state: present
       wait: yes

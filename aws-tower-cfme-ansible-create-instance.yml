@@ -34,7 +34,7 @@
   
   - local_action:
       module: ec2_elb
-      ec2_region: "{{ region }}"
+      ec2_region: "{{ aws_region }}"
       instance_id: "{{ ec2.instance_ids }}"
       ec2_elbs: "ticketmonster"
       state: present

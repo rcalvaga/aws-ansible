@@ -51,6 +51,10 @@
           from_port: 9990
           to_port: 9990
           cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 9090
+          to_port: 9090
+          cidr_ip: 0.0.0.0/0
     register: sec_group
     
   - set_stats:

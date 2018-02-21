@@ -10,6 +10,7 @@
       module: ec2_elb_lb
       name: "{{ instance_name }}"
       state: present
+      region: "{{ aws_region }}"
       zones:
         - "{{ aws_zone }}"
       listeners:

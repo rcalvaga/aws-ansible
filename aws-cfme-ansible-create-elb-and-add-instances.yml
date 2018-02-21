@@ -13,6 +13,7 @@
       region: "{{ aws_region }}"
       subnets:
       - "{{ subnet_id }}"
+      security_group_names: aws-workshop-sec-group
       listeners:
         - protocol: http
           load_balancer_port: 80

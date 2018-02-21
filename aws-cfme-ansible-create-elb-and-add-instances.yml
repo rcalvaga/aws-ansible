@@ -13,6 +13,8 @@
       region: "{{ aws_region }}"
       zones:
         - "{{ aws_zone }}"
+      subnets:
+      - "{{ subnet_id }}"
       listeners:
         - protocol: http
           load_balancer_port: 80

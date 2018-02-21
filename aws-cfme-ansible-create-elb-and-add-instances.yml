@@ -5,7 +5,7 @@
   connection: local
   
   tasks:
-  
+  - name: Creating a New ELB 
   - local_action:
       module: ec2_elb_lb
       name: "{{ instance_name }}"
@@ -29,7 +29,11 @@
           interval: 30 # seconds
           unhealthy_threshold: 2
           healthy_threshold: 10
-        
+          
+  - name: Wait for HTTP to come up
+    wait_for: host={{ ec2.instances[0].public_dns_name }} port=80 delay=60 timeout=320 state=started
+  
+  - name: Registering Instances into ELB  
   - local_action:
       module: ec2_elb
       ec2_region: "{{ aws_region }}"
@@ -42,3 +46,8 @@
       - "{{ ec2_instances }}"
     become: false
     ignore_errors: yes
+    register: result
+    until: result | success
+    retries: 3
+    delay: 10
+

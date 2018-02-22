@@ -44,6 +44,6 @@
     ignore_errors: yes
     register: result
     until: result | success
-    retries: 6
+    retries: 10
     delay: 10
 

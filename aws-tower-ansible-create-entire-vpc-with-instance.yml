@@ -88,7 +88,7 @@
   retries: 5
 
   set_fact:
-    ec2_vpc_id: "{{ vpc.vpc.id }}"
+    vpc_id: "{{ vpc.vpc.id }}"
     subnet_id: "{{ subnet.subnet.id }}"
 
   

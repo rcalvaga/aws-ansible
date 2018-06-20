@@ -3,7 +3,7 @@
 #                                                                                              #
 # By Robert J. Calva - Red Hat LATAM - 2018                                                    #
 #                                                                                              #
-# NOTE: just set the aws_region, aws_zone, name_zone, attendee, aws_keypair and                #
+# NOTE: just set the aws_region, aws_zone, attendee, aws_keypair, cidr_block  and              #
 # volume_type variables as you wish!                                                           #
 #                                                                                              #
 # IMPORTANT: regarding storage_type information, please take a look at this link:              #
@@ -19,15 +19,15 @@
 # Enjoy!                                                                                       #
 ################################################################################################
 - name: Create an Entire VPC Environment in AWS
-  hosts: all
+  hosts: localhost
   connection: local
   tasks:
   - name: Create the VPC in AWS {{ aws_region }}
     ec2_vpc_net:
-        state: present
-        Name: "Workshop VPC {{ attendee }}"
-        cidr_block: 192.168.0.0/16        
-        region: "{{ aws_region }}"
+      state: present
+      name: "Workshop VPC {{ attendee }}"
+      cidr_block: "{{ cidr_block }}"        
+      region: "{{ aws_region }}"
     register: vpc
     until: vpc is not failed
     retries: 5
@@ -60,13 +60,13 @@
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpc.id }}"
       az: "{{ aws_zone }}"
-      cidr: 192.168.1.0/24
+      cidr: "{{ cidr_block }}"
       wait_timeout: 600
     register: subnet
     until: subnet is not failed
     retries: 15 
     
-  - name: vpc internet gateway is present for {{ vpc.vpc.id }}
+  - name: VPC Internet Gateway is Present for VPC {{ attendee }}
     ec2_vpc_igw:
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpc.id }}" 
@@ -74,8 +74,8 @@
     until: igw is not failed
     retries: 15
     
- - name: vpc public subnet route table is present for {{ create_vpc.vpc.id }}
-   ec2_vpc_route_table:
+  - name: VPC Public Subnet Route Table is Present for VPC {{ attendee }}
+    ec2_vpc_route_table:
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpc.id }}"
       subnets:
@@ -83,13 +83,14 @@
       routes:
        - dest: 0.0.0.0/0
          gateway_id: "{{ igw.gateway_id }}"
-  register: routetable
-  until: routetable is not failed
-  retries: 5
+    register: routetable
+    until: routetable is not failed
+    retries: 5
 
-  set_fact:
-    vpc_id: "{{ vpc.vpc.id }}"
-    subnet_id: "{{ subnet.subnet.id }}"
+  - name: set variables for instance creation
+    set_fact:
+      ec2_vpc_id: "{{ vpc.vpc.id }}"
+      ec2_subnet_id: "{{ subnet.subnet.id }}"
 
   
   - name: Creating an AWS Instance in our VPC 
@@ -112,7 +113,7 @@
       count_tag:
         Name: "{{ instance_name }}"
       region: "{{ aws_region }}"
-      vpc_subnet_id: "{{ subnet_id }}"
+      vpc_subnet_id: "{{ ec2_subnet_id }}"
       zone: "{{ aws_zone }}"
       assign_public_ip: yes
     register: ec2

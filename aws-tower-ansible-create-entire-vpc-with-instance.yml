@@ -3,7 +3,7 @@
 #                                                                                              #
 # By Robert J. Calva - Red Hat LATAM - 2018                                                    #
 #                                                                                              #
-# NOTE: just set the aws_region, aws_zone, attendee, aws_keypair, cidr_block  and              #
+# NOTE: just set the aws_region, aws_zone, vpc_name, aws_keypair, cidr_block  and              #
 # volume_type variables as you wish!                                                           #
 #                                                                                              #
 # IMPORTANT: regarding storage_type information, please take a look at this link:              #
@@ -25,12 +25,12 @@
   - name: Create the VPC in AWS {{ aws_region }}
     ec2_vpc_net:
       state: present
-      name: "Workshop VPC {{ attendee }}"
+      name: "Workshop VPC {{ vpc_name }}"
       cidr_block: "{{ cidr_block }}"        
       region: "{{ aws_region }}"
     register: vpc
     until: vpc is not failed
-    retries: 5
+    retries: 3
     
   - name: Create an AWS Security Group for our Workshop
     ec2_group:
@@ -53,9 +53,9 @@
           cidr_ip: 0.0.0.0/0
     register: aws_workshop_sec_group
     until: aws_workshop_sec_group is not failed
-    retries: 5
+    retries: 3
     
-  - name: Create Subnet for VPC {{ attendee }}
+  - name: Create Subnet for VPC {{ vpc_name }}
     ec2_vpc_subnet:
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpc.id }}"
@@ -64,17 +64,17 @@
       wait_timeout: 600
     register: subnet
     until: subnet is not failed
-    retries: 15 
+    retries: 10 
     
-  - name: VPC Internet Gateway is Present for VPC {{ attendee }}
+  - name: VPC Internet Gateway is Present for VPC {{ vpc_name }}
     ec2_vpc_igw:
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpc.id }}" 
     register: igw
     until: igw is not failed
-    retries: 15
+    retries: 10
     
-  - name: VPC Public Subnet Route Table is Present for VPC {{ attendee }}
+  - name: VPC Public Subnet Route Table is Present for VPC {{ vpc_name }}
     ec2_vpc_route_table:
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpc.id }}"
@@ -85,7 +85,7 @@
          gateway_id: "{{ igw.gateway_id }}"
     register: routetable
     until: routetable is not failed
-    retries: 5
+    retries: 3
 
   - name: set variables for instance creation
     set_fact:

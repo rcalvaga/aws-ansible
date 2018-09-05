@@ -20,6 +20,7 @@
 ################################################################################################
 - name: Create an Entire VPC Environment in AWS
   hosts: localhost
+  gather_facts: False
   connection: local
   tasks:
   - name: Create the VPC in AWS {{ aws_region }}
@@ -128,7 +129,7 @@
 
 - name: Sending E-mails
   hosts: launched
-  gather_facts: True
+  gather_facts: False
   remote_user: ec2-user
   sudo: yes
  

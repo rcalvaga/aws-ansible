@@ -134,7 +134,5 @@
       to_addresses: "{{ user_email }}"
       html_body: yes
       from_address: "{{ sendgrid_from_address }}"
-    with_items: "{{ ec2.instances }}"
     delegate_to: localhost
-    tags:
-      - email
+

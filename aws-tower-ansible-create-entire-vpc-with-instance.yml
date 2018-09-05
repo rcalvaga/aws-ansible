@@ -138,6 +138,8 @@
 - name: Configuring Instance
   hosts: launched
   gather_facts: False
+  remote_user: ec2-user
+  sudo: yes
   
   tasks:
   - name: install Apache

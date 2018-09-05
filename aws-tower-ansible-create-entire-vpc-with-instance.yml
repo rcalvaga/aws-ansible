@@ -20,6 +20,7 @@
 ################################################################################################
 - name: Create an Entire VPC Environment in AWS
   hosts: localhost
+  gather_facts: False
   connection: local
   tasks:
   - name: Create the VPC in AWS {{ aws_region }}
@@ -98,7 +99,7 @@
       key_name: "{{ aws_keypair }}"
       group: aws-workshop-sec-group
       instance_type: t2.micro
-      image: ami-b63769a1
+      image: ami-6871a115
       wait: yes
       wait_timeout: 500
       volumes:
@@ -150,3 +151,17 @@
       state: started
       enabled: yes
 
+- name: Sending E-mail to Users
+  hosts: localhost
+  gather_facts: False
+  connection: local
+  tasks:
+  - name: Send email to students with AWS information
+    sendgrid:
+      api_key: "{{ sendgrid_api_key }}"
+      subject: "{{ sendgrid_subject }}"
+      body: "{{ sendgrid_body }}"
+      to_addresses: "{{ user_email }}"
+      html_body: yes
+      from_address: "{{ sendgrid_from_address }}"
+    delegate_to: localhost

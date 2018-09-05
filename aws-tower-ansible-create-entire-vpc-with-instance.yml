@@ -117,3 +117,15 @@
       zone: "{{ aws_zone }}"
       assign_public_ip: yes
     register: ec2
+
+  - name: Send email to students with AWS information
+    sendgrid:
+      api_key: "{{ sendgrid_api_key }}"
+      subject: "{{ sendgrid_subject }}"
+      body: "{{ sendgrid_body }}"
+      to_addresses: "{{ user_email }}"
+      html_body: yes
+      from_address: "{{ sendgrid_from_address }}"
+    delegate_to: localhost
+    tags:
+      - email

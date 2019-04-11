@@ -1,0 +1,99 @@
+################################################################################################
+# Deleting an Entire VPC Environment in AWS                                                    #
+#                                                                                              #
+# By Robert J. Calva - Red Hat LATAM - 2019                                                    #
+#                                                                                              #
+# NOTE: just set the aws_region, aws_zone, name_zone, attendee, aws_keypair and                #
+# volume_type variables as you wish!                                                           #
+#                                                                                              #
+# IMPORTANT: regarding storage_type information, please take a look at this link:              #
+# http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html                       #
+#                                                                                              #
+# Variable examples:                                                                           #
+#                                                                                              #
+# aws_region could be: sa-east-1 or us-east-1                                                  #
+# aws_zone could be: sa-east-1a, sa-east-1b, us-east-1a, us-east-1b                            #
+# name_zone could be: example.com                                                              #
+# volume_type could be: standard or gp2                                                        #
+#                                                                                              #
+# Enjoy!                                                                                       #
+################################################################################################
+- name: Delete an Entire VPC Environment in AWS
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+  
+  - name: Deleting an AWS Instance
+    ec2:
+      instance_tags:
+        Name: "{{ instance_name }}"
+      region: "{{ aws_region }}"
+      wait: yes
+      wait_timeout: 500
+      state: absent
+
+  - name: Deleting VPC Public Subnet Route Table for VPC {{ attendee }}
+    ec2_vpc_route_table:
+      region: "{{ aws_region }}"
+      vpc_id: "{{ vpc.vpc.id }}"
+      subnets:
+       - "{{ subnet.subnet.id }}"
+      routes:
+       - dest: 0.0.0.0/0
+         gateway_id: "{{ igw.gateway_id }}"
+    register: routetable
+    until: routetable is not failed
+    retries: 5
+    
+  - name: Create the VPC in AWS {{ aws_region }}
+    ec2_vpc_net:
+      state: present
+      name: "Workshop VPC {{ attendee }}"
+      cidr_block: "{{ cidr_block }}"
+      region: "{{ aws_region }}"
+    register: vpc
+    until: vpc is not failed
+    retries: 5
+
+  - name: Create an AWS Security Group for our Workshop
+    ec2_group:
+      name: "aws-workshop-sec-group"
+      region: "{{ aws_region }}"
+      description: Workshop Security Group
+      vpc_id: "{{ vpc.vpc.id }}"
+      rules:
+        - proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 443
+          to_port: 443
+          cidr_ip: 0.0.0.0/0
+    register: aws_workshop_sec_group
+    until: aws_workshop_sec_group is not failed
+    retries: 5
+
+  - name: Create Subnet for VPC {{ attendee }}
+    ec2_vpc_subnet:
+      region: "{{ aws_region }}"
+      vpc_id: "{{ vpc.vpc.id }}"
+      az: "{{ aws_zone }}"
+      cidr: "{{ cidr_block }}"
+      wait_timeout: 600
+    register: subnet
+    until: subnet is not failed
+    retries: 15
+
+  - name: VPC Internet Gateway is Present for VPC {{ attendee }}
+    ec2_vpc_igw:
+      region: "{{ aws_region }}"
+      vpc_id: "{{ vpc.vpc.id }}"
+    register: igw
+    until: igw is not failed
+    retries: 15

@@ -131,4 +131,6 @@
   remote_user: centos
   sudo: yes
   roles:
-    - jboss
+    - common
+    - jboss-standalone
+    - java-app

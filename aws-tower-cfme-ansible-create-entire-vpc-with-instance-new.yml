@@ -50,8 +50,8 @@
           to_port: 80
           cidr_ip: 0.0.0.0/0
         - proto: tcp
-          from_port: 443
-          to_port: 443
+          from_port: 9090
+          to_port: 9090
           cidr_ip: 0.0.0.0/0
     register: aws_workshop_sec_group
     until: aws_workshop_sec_group is not failed

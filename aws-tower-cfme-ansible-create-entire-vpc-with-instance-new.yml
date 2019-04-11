@@ -109,6 +109,8 @@
         delete_on_termination: true
       instance_initiated_shutdown_behavior: stop
       termination_protection: no
+      instance_tags:
+        Name: "{{ instance_name }}"
       count_tag:
         Name: "{{ instance_name }}"
       region: "{{ aws_region }}"

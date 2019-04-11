@@ -27,7 +27,7 @@
   - name: Create the VPC in AWS {{ aws_region }}
     ec2_vpc_net:
       state: present
-      name: "Workshop VPC {{ attendee }}"
+      name: "VPC {{ attendee }}"
       cidr_block: "{{ cidr_block }}"
       region: "{{ aws_region }}"
     register: vpc
@@ -109,12 +109,13 @@
         delete_on_termination: true
       instance_initiated_shutdown_behavior: stop
       termination_protection: no
-      instance_tags:
+      count_tag:
         Name: "{{ instance_name }}"
       region: "{{ aws_region }}"
       vpc_subnet_id: "{{ ec2_subnet_id }}"
       zone: "{{ aws_zone }}"
       assign_public_ip: yes
+      exact_count: 1
     register: ec2
 
   - name: Add new instance to host group

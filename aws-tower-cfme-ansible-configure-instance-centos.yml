@@ -3,7 +3,9 @@
   gather_facts: True
   remote_user: centos
   sudo: yes
+  
   tasks:
+  
   - name: Install Cockpit Console
     yum:
       name: "{{ item }}"

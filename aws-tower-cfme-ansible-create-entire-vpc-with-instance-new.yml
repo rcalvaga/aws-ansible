@@ -127,41 +127,13 @@
   - name: Wait for SSH to come up
     wait_for: host={{ item.public_dns_name }} port=22 delay=60 timeout=320 state=started
     with_items: "{{ ec2.instances }}"
-
-- name: Configure instance(s)
-  hosts: launched
-  gather_facts: True
-  remote_user: centos
-  sudo: yes
-  tasks:
-  - name: Install Cockpit Console
-    yum:
-      name: "{{ item }}"
-      state: latest
-    with_items:
-    - cockpit
-    - cockpit-dashboard
-
-  - name: Start Cockpit Service
-    service:
-      name: cockpit.socket
-      state: started
-      enabled: yes
-
-  - name: install Apache
-    yum:
-      name: httpd
-      state: latest
-
-  - name: start Apache Service
-    service:
-      name: httpd
-      state: started
-      enabled: yes
-
-  - name: create Test user
-    user:
-     name: test
-     comment: "Test User by Ansible"
-     password: $1$ctRQ8kmb$PMF.2YAjQrdjiDGFuE4uw0
-     group: wheel
+         
+- name: Configuring CentOS Instance
+  import_playbook: aws-tower-cfme-ansible-configure-instance-centos.yml
+  when: image == "ami-ae7bfdb8"
+  
+- name: Configuring RHEL Instance
+  import_playbook: aws-tower-cfme-ansible-configure-instance-rhel.yml
+  when: image == "ami-011b3ccf1bd6db744" 
+  
+  

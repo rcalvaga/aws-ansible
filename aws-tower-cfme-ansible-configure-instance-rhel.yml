@@ -5,21 +5,14 @@
   sudo: yes
   
   tasks:
-  
-  - name: Add repository
-    yum_repository:
-      name: epel
-      description: EPEL YUM repo
-      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-      
+ 
   - name: Install Cockpit Console
     yum:
       name: "{{ item }}"
       state: latest
     with_items:
     - cockpit
-    - cockpit-dashboard
-
+    
   - name: Start Cockpit Service
     service:
       name: cockpit.socket

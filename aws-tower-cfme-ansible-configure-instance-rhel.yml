@@ -1,0 +1,37 @@
+- name: Configure instance(s)
+  hosts: launched
+  gather_facts: True
+  remote_user: ec2-user
+  sudo: yes
+  tasks:
+  - name: Install Cockpit Console
+    yum:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+    - cockpit
+    - cockpit-dashboard
+
+  - name: Start Cockpit Service
+    service:
+      name: cockpit.socket
+      state: started
+      enabled: yes
+
+  - name: install Apache
+    yum:
+      name: httpd
+      state: latest
+
+  - name: start Apache Service
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+  - name: create Test user
+    user:
+     name: test
+     comment: "Test User by Ansible"
+     password: $1$ctRQ8kmb$PMF.2YAjQrdjiDGFuE4uw0
+     group: wheel

@@ -3,7 +3,15 @@
   gather_facts: True
   remote_user: ec2-user
   sudo: yes
+  
   tasks:
+  
+  - name: Add repository
+    yum_repository:
+      name: epel
+      description: EPEL YUM repo
+      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+      
   - name: Install Cockpit Console
     yum:
       name: "{{ item }}"

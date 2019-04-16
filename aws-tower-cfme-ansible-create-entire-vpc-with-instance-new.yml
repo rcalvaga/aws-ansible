@@ -129,11 +129,11 @@
     with_items: "{{ ec2.instances }}"
          
 - name: Configuring CentOS Instance
-  include_playbook: aws-tower-cfme-ansible-configure-instance-centos.yml
+  import_playbook: aws-tower-cfme-ansible-configure-instance-centos.yml
   when: image == "ami-ae7bfdb8"
   
 - name: Configuring RHEL Instance
-  include_playbook: aws-tower-cfme-ansible-configure-instance-rhel.yml
+  import_playbook: aws-tower-cfme-ansible-configure-instance-rhel.yml
   when: image == "ami-011b3ccf1bd6db744" 
   
   

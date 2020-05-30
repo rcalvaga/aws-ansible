@@ -59,10 +59,11 @@
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpcs[0].id }}"
       filters:
-        route-table-id: "{{ rtb.route_tables[].id }}"
+        route-table-id: "{{ item.id }}"
       tags:
         Name: "VPC {{ attendee }}"
       state: absent
+    loop: "{{ rtb.route_tables }}"
    
   - name: Delete VPC Internet Gateway for VPC {{ attendee }}
     ec2_vpc_igw:

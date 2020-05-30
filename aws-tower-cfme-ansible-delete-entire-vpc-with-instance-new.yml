@@ -40,11 +40,11 @@
       state: absent
     ignore_errors: yes
       
- - name: Gather information about any VPC with a tag key Name and value Example
-   ec2_vpc_net_info:
-    filters:
-      "tag:Name": "VPC {{ attendee }}"
-   register: vpc
+  - name: Gather information about VPC {{ attendee }}
+    ec2_vpc_net_info:
+     filters:
+       "tag:Name": "VPC {{ attendee }}"
+    register: vpc
       
   - name: Delete VPC Public Subnet Route Table for VPC {{ attendee }}
     ec2_vpc_route_table:

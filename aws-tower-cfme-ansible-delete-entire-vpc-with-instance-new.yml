@@ -59,6 +59,7 @@
       region: "{{ aws_region }}"
       route_table_id: "{{ item.id }}"
       vpc_id: "{{ vpc.vpcs[0].id }}"
+      lookup: id
       state: absent
     loop: "{{ rtb.route_tables }}"
    
@@ -75,8 +76,6 @@
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpcs[0].id }}"
       cidr: "{{ cidr_block }}"
-      purge_routes: yes
-      purge_subnets: yes
       tags:
         Name: "VPC {{ attendee }}"
       state: absent

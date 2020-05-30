@@ -42,6 +42,7 @@
       
   - name: Gather information about VPC {{ attendee }}
     ec2_vpc_net_info:
+     region: "{{ aws_region }}"
      filters:
        "tag:Name": "VPC {{ attendee }}"
     register: vpc

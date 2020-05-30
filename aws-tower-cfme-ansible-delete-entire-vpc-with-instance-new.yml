@@ -29,6 +29,11 @@
         "tag:Name": "{{ instance_name }}"
       region: "{{ aws_region }}"
     register: ec2
+    
+  - name: debugging instance_id
+    debug:
+      var: ec2
+      verbosity: 2
       
   - name: Deleting an AWS Instance
     ec2:

@@ -59,7 +59,7 @@
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpcs[0].id }}"
       filters:
-        route-table-id: "{{ item.id }}"
+        route_table_id: "{{ item.id }}"
       tags:
         Name: "VPC {{ attendee }}"
       state: absent

@@ -33,7 +33,7 @@
   - name: debugging instance_id
     debug:
       var: ec2
-      verbosity: 2
+      verbosity: 1
       
   - name: Deleting an AWS Instance
     ec2:

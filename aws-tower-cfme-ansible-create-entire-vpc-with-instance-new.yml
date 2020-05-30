@@ -28,6 +28,8 @@
     ec2_vpc_net:
       state: present
       name: "VPC {{ attendee }}"
+      tags:
+        name: "VPC {{ attendee }}"
       cidr_block: "{{ cidr_block }}"
       region: "{{ aws_region }}"
     register: vpc

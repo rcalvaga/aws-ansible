@@ -27,6 +27,7 @@
     ec2_instance_info:
       filters:
         "tag:Name": "{{ instance_name }}"
+        instance-state-name: running
       region: "{{ aws_region }}"
     register: ec2
       

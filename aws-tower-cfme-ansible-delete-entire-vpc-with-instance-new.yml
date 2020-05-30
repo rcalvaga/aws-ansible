@@ -52,7 +52,7 @@
       region: "{{ aws_region }}"
       filters:
         "tag:Name": "VPC {{ attendee }}"
-      register: rtbs
+    register: rtbs
       
   - name: Delete VPC Public Subnet Route Table for VPC {{ attendee }}
     ec2_vpc_route_table:

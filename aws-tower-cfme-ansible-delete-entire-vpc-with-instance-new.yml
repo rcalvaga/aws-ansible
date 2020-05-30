@@ -62,6 +62,7 @@
       lookup: id
       state: absent
     loop: "{{ rtb.route_tables }}"
+    ignore_errors: yes
    
   - name: Delete VPC Internet Gateway for VPC {{ attendee }}
     ec2_vpc_igw:

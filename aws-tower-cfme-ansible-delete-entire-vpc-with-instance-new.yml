@@ -93,6 +93,7 @@
       name: "VPC {{ attendee }}"
       tags:
         Name: "VPC {{ attendee }}"
+      cidr: "{{ cidr_block }}"
       purge_cidrs: yes
       region: "{{ aws_region }}"
       state: absent

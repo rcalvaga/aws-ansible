@@ -41,7 +41,7 @@
 
   - name: Deleting the VPC {{ attendee }} in AWS {{ aws_region }}
     ec2_vpc_net:
-      name: "Workshop VPC {{ attendee }}"
+      name: "VPC {{ attendee }}"
       tags:
         name: "VPC {{ attendee }}"
       cidr_block: "{{ cidr_block }}"

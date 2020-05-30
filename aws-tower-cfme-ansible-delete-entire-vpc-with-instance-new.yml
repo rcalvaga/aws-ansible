@@ -75,6 +75,8 @@
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpcs[0].id }}"
       cidr: "{{ cidr_block }}"
+      purge_routes: yes
+      purge_subnets: yes
       tags:
         Name: "VPC {{ attendee }}"
       state: absent

@@ -45,21 +45,21 @@
       region: "{{ aws_region }}"
       tags:
         Name: "VPC {{ attendee }}"
-    state: absent
+      state: absent
    
   - name: Delete VPC Internet Gateway for VPC {{ attendee }}
     ec2_vpc_igw:
       region: "{{ aws_region }}"
       tags:
         Name: "VPC {{ attendee }}"
-    state: absent
+      state: absent
    
   - name: Delete Subnet for VPC {{ attendee }}
     ec2_vpc_subnet:
       region: "{{ aws_region }}"
       tags:
         Name: "VPC {{ attendee }}"
-    state: absent
+      state: absent
 
   - name: Delete an AWS Security Group for our Workshop
     ec2_group:
@@ -67,7 +67,7 @@
       region: "{{ aws_region }}"
       tags:
         Name: "VPC {{ attendee }}"
-    state: absent
+      state: absent
         
   - name: Deleting the VPC {{ attendee }} in AWS {{ aws_region }}
     ec2_vpc_net:

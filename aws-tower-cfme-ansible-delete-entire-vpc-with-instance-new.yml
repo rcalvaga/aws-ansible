@@ -59,7 +59,6 @@
       region: "{{ aws_region }}"
       route_table_id: "{{ item.id }}"
       vpc_id: "{{ vpc.vpcs[0].id }}"
-      cidr: "{{ cidr_block }}"
       state: absent
     loop: "{{ rtb.route_tables }}"
    
@@ -75,6 +74,7 @@
     ec2_vpc_subnet:
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpcs[0].id }}"
+      cidr: "{{ cidr_block }}"
       tags:
         Name: "VPC {{ attendee }}"
       state: absent

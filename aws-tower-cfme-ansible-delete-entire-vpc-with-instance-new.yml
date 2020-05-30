@@ -23,12 +23,15 @@
   gather_facts: false
   connection: local
   tasks:
-  
+  - name: Getting EC2 Instance Info
+    - ec2_instance_info:
+      filters:
+        "tag:Name": "{{ instance_name }}"
+      register: ec2
+      
   - name: Deleting an AWS Instance
     ec2:
-      instance_ids: "{{ instance_ids }}"
-      instance_tags:
-        Name: "{{ instance_name }}"
+      instance_ids: "{{ ec2.instance_ids }}"
       region: "{{ aws_region }}"
       wait: yes
       wait_timeout: 500

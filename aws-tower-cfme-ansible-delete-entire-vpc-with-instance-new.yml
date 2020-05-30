@@ -24,10 +24,10 @@
   connection: local
   tasks:
   - name: Getting EC2 Instance Info
-    - ec2_instance_info:
+    ec2_instance_info:
       filters:
         "tag:Name": "{{ instance_name }}"
-      register: ec2
+    register: ec2
       
   - name: Deleting an AWS Instance
     ec2:

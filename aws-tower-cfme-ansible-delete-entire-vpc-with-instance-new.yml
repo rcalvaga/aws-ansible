@@ -23,14 +23,14 @@
   gather_facts: false
   connection: local
   tasks:
-  - name: Getting EC2 Instance Info
+  - name: Getting EC2 Instance Info {{ instance_name }}
     ec2_instance_info:
       filters:
         "tag:Name": "{{ instance_name }}"
       region: "{{ aws_region }}"
     register: ec2
       
-  - name: Deleting an AWS Instance
+  - name: Deleting an AWS Instance {{ instance_name }}
     ec2:
       instance_ids: "{{ ec2.instances[0].instance_id }}"
       region: "{{ aws_region }}"
@@ -38,7 +38,7 @@
       wait_timeout: 500
       state: absent
 
-  - name: Deleting the VPC in AWS {{ aws_region }}
+  - name: Deleting the VPC {{ attendee }} in AWS {{ aws_region }}
     ec2_vpc_net:
       name: "Workshop VPC {{ attendee }}"
       tags:

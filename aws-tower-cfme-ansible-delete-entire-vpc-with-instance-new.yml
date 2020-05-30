@@ -40,10 +40,11 @@
 
   - name: Deleting the VPC in AWS {{ aws_region }}
     ec2_vpc_net:
-      state: absent
       name: "Workshop VPC {{ attendee }}"
       tags:
         name: "VPC {{ attendee }}"
       cidr_block: "{{ cidr_block }}"
       region: "{{ aws_region }}"
+      state: absent
+
 

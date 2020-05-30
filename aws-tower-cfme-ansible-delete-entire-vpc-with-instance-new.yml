@@ -32,7 +32,7 @@
       
   - name: Deleting an AWS Instance
     ec2:
-      instance_ids: "{{ ec2.instances.instance_id }}"
+      instance_ids: "{{ ec2.instance_id }}"
       region: "{{ aws_region }}"
       wait: yes
       wait_timeout: 500

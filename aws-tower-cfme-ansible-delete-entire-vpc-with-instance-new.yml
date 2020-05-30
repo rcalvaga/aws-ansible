@@ -56,11 +56,11 @@
       
   - name: Delete VPC Public Subnet Route Table for VPC {{ attendee }}
     ec2_vpc_route_table:
-      filters:
-        region: "{{ aws_region }}"
-        route_table_id: "{{ item.id }}"
-        vpc_id: "{{ vpc.vpcs[0].id }}"
-        "tag:Name": "VPC {{ attendee }}"
+      region: "{{ aws_region }}"
+      route_table_id: "{{ item.id }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
+      tags:
+        Name: "VPC {{ attendee }}"
       state: absent
     loop: "{{ rtb.route_tables }}"
    

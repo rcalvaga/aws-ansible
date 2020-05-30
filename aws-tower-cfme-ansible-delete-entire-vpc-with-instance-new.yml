@@ -27,6 +27,7 @@
     ec2_instance_info:
       filters:
         "tag:Name": "{{ instance_name }}"
+      region: "{{ aws_region }}"
     register: ec2
       
   - name: Deleting an AWS Instance

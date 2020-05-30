@@ -46,6 +46,13 @@
      filters:
        "tag:Name": "VPC {{ attendee }}"
     register: vpc
+    
+  - name: Gather information about Route Tables for VPC {{ attendee }}
+    ec2_vpc_route_table_info:
+      region: "{{ aws_region }}"
+      filters:
+        "tag:Name": "VPC {{ attendee }}"
+      register: rtbs
       
   - name: Delete VPC Public Subnet Route Table for VPC {{ attendee }}
     ec2_vpc_route_table:

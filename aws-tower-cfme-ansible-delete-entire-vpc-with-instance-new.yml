@@ -50,7 +50,7 @@
   - name: Delete VPC Public Subnet Route Table for VPC {{ attendee }}
     ec2_vpc_route_table:
       region: "{{ aws_region }}"
-      vpc_id: "{{ vpc.vpc.id }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
       tags:
         Name: "VPC {{ attendee }}"
       state: absent
@@ -58,7 +58,7 @@
   - name: Delete VPC Internet Gateway for VPC {{ attendee }}
     ec2_vpc_igw:
       region: "{{ aws_region }}"
-      vpc_id: "{{ vpc.vpc.id }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
       tags:
         Name: "VPC {{ attendee }}"
       state: absent
@@ -66,7 +66,7 @@
   - name: Delete Subnet for VPC {{ attendee }}
     ec2_vpc_subnet:
       region: "{{ aws_region }}"
-      vpc_id: "{{ vpc.vpc.id }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
       tags:
         Name: "VPC {{ attendee }}"
       state: absent
@@ -74,7 +74,7 @@
   - name: Delete an AWS Security Group for our Workshop
     ec2_group:
       name: "aws-workshop-sec-group"
-      vpc_id: "{{ vpc.vpc.id }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
       region: "{{ aws_region }}"
       tags:
         Name: "VPC {{ attendee }}"

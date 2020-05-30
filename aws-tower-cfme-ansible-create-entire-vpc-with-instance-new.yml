@@ -29,7 +29,7 @@
       state: present
       name: "VPC {{ attendee }}"
       tags:
-        name: "VPC {{ attendee }}"
+        Name: "VPC {{ attendee }}"
       cidr_block: "{{ cidr_block }}"
       region: "{{ aws_region }}"
     register: vpc
@@ -41,6 +41,8 @@
       name: "aws-workshop-sec-group"
       region: "{{ aws_region }}"
       description: Workshop Security Group
+      tags:
+        Name: "VPC {{ attendee }}"
       vpc_id: "{{ vpc.vpc.id }}"
       rules:
         - proto: tcp
@@ -62,6 +64,8 @@
   - name: Create Subnet for VPC {{ attendee }}
     ec2_vpc_subnet:
       region: "{{ aws_region }}"
+      tags:
+        Name: "VPC {{ attendee }}"
       vpc_id: "{{ vpc.vpc.id }}"
       az: "{{ aws_zone }}"
       cidr: "{{ cidr_block }}"
@@ -73,6 +77,8 @@
   - name: VPC Internet Gateway is Present for VPC {{ attendee }}
     ec2_vpc_igw:
       region: "{{ aws_region }}"
+      tags:
+        Name: "VPC {{ attendee }}"
       vpc_id: "{{ vpc.vpc.id }}"
     register: igw
     until: igw is not failed
@@ -81,6 +87,8 @@
   - name: VPC Public Subnet Route Table is Present for VPC {{ attendee }}
     ec2_vpc_route_table:
       region: "{{ aws_region }}"
+      tags:
+        Name: "VPC {{ attendee }}"
       vpc_id: "{{ vpc.vpc.id }}"
       subnets:
        - "{{ subnet.subnet.id }}"

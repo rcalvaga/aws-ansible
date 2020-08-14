@@ -1,0 +1,31 @@
+- name: Create an instance in AWS
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+     key_name: id_rsa_fedora_workstation
+     group: tower-sg
+       #instance_type: a1.xlarge #ARM
+     instance_type: c4.xlarge #x86
+       #image: ami-029ba835ddd43c34f #ARM
+     image: ami-098f16afa9edf40be #x86
+     name: tower 
+     region: us-east-1
+     vpc_subnet_id: subnet-6a708523
+
+  tasks:
+    - name: Create the instance in AWS
+      ec2:
+        key_name: "{{ key_name }}" 
+        group: "{{ group }}"
+        instance_type: "{{ instance_type }}"
+        image: "{{ image }}"
+        region: "{{ region }}" 
+        wait: yes
+        wait_timeout: 500
+        count: 1
+        instance_tags:
+                Name: "{{ name }}" 
+        monitoring: yes
+        vpc_subnet_id: "{{ vpc_subnet_id }}"
+        assign_public_ip: yes

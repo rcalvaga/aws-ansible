@@ -11,7 +11,7 @@
   get_url: url=http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip dest=/opt/jboss-as-7.1.1.Final.zip
   register: result
   #until: result.status_code is not 200
-  until: result | success
+  until: result is succeeded
   retries: 5
   delay: 10
   

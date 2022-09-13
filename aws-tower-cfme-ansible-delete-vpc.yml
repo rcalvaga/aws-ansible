@@ -25,14 +25,14 @@
     ec2_vpc_net_info:
      region: "{{ aws_region }}"
      filters:
-       "tag:Name": "VPC {{ vpc_name }}"
+       "tag:Name": "{{ vpc_name }}"
     register: vpc
     
   - name: Gather information about Route Tables for VPC {{ vpc_name }}
     ec2_vpc_route_table_info:
       region: "{{ aws_region }}"
       filters:
-        "tag:Name": "VPC {{ vpc_name }}"
+        "tag:Name": "{{ vpc_name }}"
     register: rtb
       
   - name: Delete VPC Public Subnet Route Table for VPC {{ vpc_name }}
@@ -50,7 +50,7 @@
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpcs[0].id }}"
       tags:
-        Name: "VPC {{ vpc_name }}"
+        Name: "{{ vpc_name }}"
       state: absent
    
   - name: Delete Subnet for VPC {{ vpc_name }}
@@ -59,7 +59,7 @@
       vpc_id: "{{ vpc.vpcs[0].id }}"
       cidr: "{{ cidr_block }}"
       tags:
-        Name: "VPC {{ vpc_name }}"
+        Name: "{{ vpc_name }}"
       state: absent
 
   - name: Delete an AWS Security Group
@@ -68,14 +68,14 @@
       vpc_id: "{{ vpc.vpcs[0].id }}"
       region: "{{ aws_region }}"
       tags:
-        Name: "VPC {{ vpc_name }}"
+        Name: "{{ vpc_name }}"
       state: absent
         
   - name: Deleting the VPC {{ vpc_name }} in AWS {{ aws_region }}
     ec2_vpc_net:
       name: "VPC {{ vpc_name }}"
       tags:
-        Name: "VPC {{ vpc_name }}"
+        Name: "{{ vpc_name }}"
       cidr_block: "{{ cidr_block }}"
       purge_cidrs: yes
       region: "{{ aws_region }}"

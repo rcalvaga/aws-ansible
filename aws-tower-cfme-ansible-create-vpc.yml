@@ -99,6 +99,6 @@
     
   - set_stats:
       data:
-        vpc_id: "{{ vpc.vpc_id }}"
-        subnet_id: "{{ subnet.subnet_id }}"
+        vpc_id: "{{ vpc.vpc.id }}"
+        subnet_id: "{{ subnet.subnet.id }}"
       per_host: no

@@ -73,7 +73,7 @@
         
   - name: Deleting the VPC {{ vpc_name }} in AWS {{ aws_region }}
     ec2_vpc_net:
-      name: "VPC {{ vpc_name }}"
+      name: "{{ vpc_name }}"
       tags:
         Name: "{{ vpc_name }}"
       cidr_block: "{{ cidr_block }}"

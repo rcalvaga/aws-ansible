@@ -72,7 +72,7 @@
     until: subnet is not failed
     retries: 15
 
-  - name: VPC Internet Gateway is Present for VPC {{ attendee }}
+  - name: VPC Internet Gateway is Present for VPC {{  vpc_name }}
     ec2_vpc_igw:
       region: "{{ aws_region }}"
       tags:
@@ -82,7 +82,7 @@
     until: igw is not failed
     retries: 15
 
-  - name: VPC Public Subnet Route Table is Present for VPC {{ attendee }}
+  - name: VPC Public Subnet Route Table is Present for VPC {{  vpc_name }}
     ec2_vpc_route_table:
       region: "{{ aws_region }}"
       tags:

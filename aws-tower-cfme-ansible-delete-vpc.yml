@@ -1,0 +1,83 @@
+################################################################################################
+# Deleting an Entire VPC Environment in AWS                                                    #
+#                                                                                              #
+# By Robert J. Calva - Red Hat LATAM - 2022                                                    #
+#                                                                                              #
+# NOTE: just set the aws_region, aws_zone, vpc_name, cidr_block                                #
+# variables as you wish!                                                                       #
+#                                                                                              #
+# IMPORTANT: regarding storage_type information, please take a look at this link:              #
+# http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html                       #
+#                                                                                              #
+# Variable examples:                                                                           #
+#                                                                                              #
+# aws_region could be: sa-east-1 or us-east-1                                                  #
+# aws_zone could be: sa-east-1a, sa-east-1b, us-east-1a, us-east-1b                            #
+#                                                                                              #
+# Enjoy!                                                                                       #
+################################################################################################
+- name: Delete an Entire VPC Environment in AWS
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+  - name: Gather information about VPC {{ vpc_name }}
+    ec2_vpc_net_info:
+     region: "{{ aws_region }}"
+     filters:
+       "tag:Name": "VPC {{ vpc_name }}"
+    register: vpc
+    
+  - name: Gather information about Route Tables for VPC {{ vpc_name }}
+    ec2_vpc_route_table_info:
+      region: "{{ aws_region }}"
+      filters:
+        "tag:Name": "VPC {{ vpc_name }}"
+    register: rtb
+      
+  - name: Delete VPC Public Subnet Route Table for VPC {{ vpc_name }}
+    ec2_vpc_route_table:
+      region: "{{ aws_region }}"
+      route_table_id: "{{ item.id }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
+      lookup: id
+      state: absent
+    loop: "{{ rtb.route_tables }}"
+    ignore_errors: yes
+   
+  - name: Delete VPC Internet Gateway for VPC {{ vpc_name }}
+    ec2_vpc_igw:
+      region: "{{ aws_region }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
+      tags:
+        Name: "VPC {{ attendee }}"
+      state: absent
+   
+  - name: Delete Subnet for VPC {{ vpc_name }}
+    ec2_vpc_subnet:
+      region: "{{ aws_region }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
+      cidr: "{{ cidr_block }}"
+      tags:
+        Name: "VPC {{ attendee }}"
+      state: absent
+
+  - name: Delete an AWS Security Group
+    ec2_group:
+      name: "aws-workshop-sec-group"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
+      region: "{{ aws_region }}"
+      tags:
+        Name: "VPC {{ vpc_name }}"
+      state: absent
+        
+  - name: Deleting the VPC {{ vpc_name }} in AWS {{ aws_region }}
+    ec2_vpc_net:
+      name: "VPC {{ vpc_name }}"
+      tags:
+        Name: "VPC {{ vpc_name }}"
+      cidr_block: "{{ cidr_block }}"
+      purge_cidrs: yes
+      region: "{{ aws_region }}"
+      state: absent
+

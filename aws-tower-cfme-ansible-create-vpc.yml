@@ -3,8 +3,8 @@
 #                                                                                              #
 # By Robert J. Calva - Red Hat LATAM - 2022                                                    #
 #                                                                                              #
-# NOTE: just set the aws_region, aws_zone, name_zone, attendee, aws_keypair and                #
-# volume_type variables as you wish!                                                           #
+# NOTE: just set the aws_region, aws_zone, vpc_name, cidr_block                                #
+# variables as you wish!                                                                       #
 #                                                                                              #
 # IMPORTANT: regarding storage_type information, please take a look at this link:              #
 # http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html                       #
@@ -13,8 +13,6 @@
 #                                                                                              #
 # aws_region could be: sa-east-1 or us-east-1                                                  #
 # aws_zone could be: sa-east-1a, sa-east-1b, us-east-1a, us-east-1b                            #
-# name_zone could be: example.com                                                              #
-# volume_type could be: standard or gp2                                                        #
 #                                                                                              #
 # Enjoy!                                                                                       #
 ################################################################################################

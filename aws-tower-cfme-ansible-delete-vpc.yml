@@ -50,7 +50,7 @@
       region: "{{ aws_region }}"
       vpc_id: "{{ vpc.vpcs[0].id }}"
       tags:
-        Name: "VPC {{ attendee }}"
+        Name: "VPC {{ vpc_name }}"
       state: absent
    
   - name: Delete Subnet for VPC {{ vpc_name }}
@@ -59,7 +59,7 @@
       vpc_id: "{{ vpc.vpcs[0].id }}"
       cidr: "{{ cidr_block }}"
       tags:
-        Name: "VPC {{ attendee }}"
+        Name: "VPC {{ vpc_name }}"
       state: absent
 
   - name: Delete an AWS Security Group

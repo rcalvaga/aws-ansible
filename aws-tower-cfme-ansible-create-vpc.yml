@@ -1,7 +1,7 @@
 ################################################################################################
 # Creating an Entire VPC Environment in AWS                                                    #
 #                                                                                              #
-# By Robert J. Calva - Red Hat LATAM - 2019                                                    #
+# By Robert J. Calva - Red Hat LATAM - 2022                                                    #
 #                                                                                              #
 # NOTE: just set the aws_region, aws_zone, name_zone, attendee, aws_keypair and                #
 # volume_type variables as you wish!                                                           #
